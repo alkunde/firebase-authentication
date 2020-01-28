@@ -47,14 +47,14 @@ const styles = StyleSheet.create({
   inputBox: {
     width: '85%',
     margin: 10,
-    padding: 15,
+    padding: 10,
     fontSize: 16,
     borderColor: '#d3d3d3',
     borderBottomWidth: 1,
     textAlign: 'center'
   },
   button: {
-    marginTop: 30,
+    marginTop: 20,
     minHeight: 46,
     marginBottom: 20,
     paddingVertical: 5,
