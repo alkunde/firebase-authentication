@@ -1,14 +1,74 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { KeyboardAvoidingView, TextInput, StyleSheet, TouchableOpacity, Text, Button } from 'react-native'
 
 class Login extends Component {
+  state = {
+    email: '',
+    password: ''
+  }
+
   render() {
+    const { email, password } = this.state
+
     return (
-      <View>
-        <Text>Login Screen</Text>
-      </View>
+      <KeyboardAvoidingView behavior='padding' style={styles.container}>
+        <TextInput
+          style={styles.inputBox}
+          value={email}
+          onChangeText={email => this.setState({ email })}
+          placeholder='E-mail'
+          autoCapitalize='none'
+          keyboardType='email-address'
+        />
+        <TextInput
+          style={styles.inputBox}
+          value={password}
+          onChangeText={password => this.setState({ password })}
+          placeholder='Password'
+          autoCapitalize='none'
+          secureTextEntry={true}
+        />
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+        <Button title="Don't have an account yet? Sign up" />
+      </KeyboardAvoidingView>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  inputBox: {
+    width: '85%',
+    margin: 10,
+    padding: 15,
+    fontSize: 16,
+    borderColor: '#d3d3d3',
+    borderBottomWidth: 1,
+    textAlign: 'center'
+  },
+  button: {
+    marginTop: 30,
+    minHeight: 46,
+    marginBottom: 20,
+    paddingVertical: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f6820d',
+    borderRadius: 5,
+    width: '85%'
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff'
+  }
+})
 
 export default Login
