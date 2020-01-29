@@ -6,52 +6,31 @@ import {
   TouchableOpacity,
   Text
 } from 'react-native'
-
-import Firebase from '../config/Firebase';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { updateEmail, updatePassword, signup } from '../actions/user'
 
 class Signup extends Component {
-  constructor() {
-    super();
-    this.state = {
-      name: '',
-      email: '',
-      password: ''
-    }
-  }
-
   handleSignUp = () => {
-    const { email, password } = this.state
-
-    Firebase.auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => this.props.navigation.navigate('Profile'))
-      .catch(error => console.log(error))
+    this.props.signup()
+    this.props.navigation.navigate('Profile')
   }
 
   render() {
-    const { name, email, password } = this.state;
-
     return (
       <KeyboardAvoidingView behavior='padding' style={styles.container}>
         <TextInput
           style={styles.inputBox}
-          value={name}
-          onChangeText={name => this.setState({ name })}
-          placeholder='Full Name'
-          autoCapitalize='words'
-        />
-        <TextInput
-          style={styles.inputBox}
-          value={email}
-          onChangeText={email => this.setState({ email })}
+          value={this.props.user.email}
+          onChangeText={email => this.props.updateEmail(email)}
           placeholder='E-mail'
           autoCapitalize='none'
           keyboardType='email-address'
         />
         <TextInput
           style={styles.inputBox}
-          value={password}
-          onChangeText={password => this.setState({ password })}
+          value={this.props.user.password}
+          onChangeText={password => this.props.updatePassword(password)}
           placeholder='Password'
           autoCapitalize='none'
           secureTextEntry
@@ -98,4 +77,13 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Signup
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ updateEmail, updatePassword, signup }, dispatch)
+
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup)

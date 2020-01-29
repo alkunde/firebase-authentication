@@ -7,41 +7,31 @@ import {
   Text,
   Button
 } from 'react-native'
-
-import Firebase from '../config/Firebase';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { updateEmail, updatePassword, login } from '../actions/user'
 
 class Login extends Component {
-  state = {
-    email: '',
-    password: ''
-  }
-
   handleLogin = () => {
-    const { email, password } = this.state
-
-    Firebase.auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => this.props.navigation.navigate('Profile'))
-      .catch(error => console.log(error))
+    this.props.login()
+    this.props.navigation.navigate('Profile')
   }
 
   render() {
-    const { email, password } = this.state
-
     return (
       <KeyboardAvoidingView behavior='padding' style={styles.container}>
         <TextInput
           style={styles.inputBox}
-          value={email}
-          onChangeText={email => this.setState({ email })}
+          value={this.props.user.email}
+          onChangeText={email => this.props.updateEmail(email)}
           placeholder='E-mail'
           autoCapitalize='none'
           keyboardType='email-address'
         />
         <TextInput
           style={styles.inputBox}
-          value={password}
-          onChangeText={password => this.setState({ password })}
+          value={this.props.user.password}
+          onChangeText={password => this.props.updatePassword(password)}
           placeholder='Password'
           autoCapitalize='none'
           secureTextEntry={true}
@@ -92,4 +82,13 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Login
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ updateEmail, updatePassword, login }, dispatch)
+
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)
