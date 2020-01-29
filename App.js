@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import Signup from './screens/Signup'
+
+import SwitchNavigator from './navigation/SwitchNavigator';
 
 export default class App extends Component {
   render() {
-    return <Signup />
+    return <SwitchNavigator />
   }
 }

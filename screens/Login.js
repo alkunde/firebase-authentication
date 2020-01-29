@@ -1,10 +1,28 @@
 import React, { Component } from 'react'
-import { KeyboardAvoidingView, TextInput, StyleSheet, TouchableOpacity, Text, Button } from 'react-native'
+import {
+  KeyboardAvoidingView,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  Button
+} from 'react-native'
+
+import Firebase from '../config/Firebase';
 
 class Login extends Component {
   state = {
     email: '',
     password: ''
+  }
+
+  handleLogin = () => {
+    const { email, password } = this.state
+
+    Firebase.auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => this.props.navigation.navigate('Profile'))
+      .catch(error => console.log(error))
   }
 
   render() {
@@ -28,10 +46,13 @@ class Login extends Component {
           autoCapitalize='none'
           secureTextEntry={true}
         />
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={this.handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
-        <Button title="Don't have an account yet? Sign up" />
+        <Button
+          title="Don't have an account yet? Sign up"
+          onPress={() => this.props.navigation.navigate('Signup')}
+        />
       </KeyboardAvoidingView>
     )
   }
